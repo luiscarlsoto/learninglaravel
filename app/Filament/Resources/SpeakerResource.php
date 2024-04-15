@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\ConferenceResource\Pages;
-use App\Filament\Resources\ConferenceResource\RelationManagers;
-use App\Models\Conference;
+use App\Filament\Resources\SpeakerResource\Pages;
+use App\Filament\Resources\SpeakerResource\RelationManagers;
+use App\Models\Speaker;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,9 +13,9 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class ConferenceResource extends Resource
+class SpeakerResource extends Resource
 {
-    protected static ?string $model = Conference::class;
+    protected static ?string $model = Speaker::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -26,21 +26,16 @@ class ConferenceResource extends Resource
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('description')
+                Forms\Components\TextInput::make('email')
+                    ->email()
                     ->required()
                     ->maxLength(255),
-                Forms\Components\DateTimePicker::make('start_date')
-                    ->required(),
-                Forms\Components\DateTimePicker::make('end_date')
-                    ->required(),
-                Forms\Components\TextInput::make('status')
+                Forms\Components\Textarea::make('bio')
+                    ->required()
+                    ->columnSpanFull(),
+                Forms\Components\TextInput::make('twitter_handle')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('region')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\Select::make('venue_id')
-                    ->relationship('venue', 'name'),
             ]);
     }
 
@@ -50,21 +45,10 @@ class ConferenceResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('description')
+                Tables\Columns\TextColumn::make('email')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('start_date')
-                    ->dateTime()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('end_date')
-                    ->dateTime()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('status')
+                Tables\Columns\TextColumn::make('twitter_handle')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('region')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('venue.name')
-                    ->numeric()
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -97,9 +81,9 @@ class ConferenceResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListConferences::route('/'),
-            'create' => Pages\CreateConference::route('/create'),
-            'edit' => Pages\EditConference::route('/{record}/edit'),
+            'index' => Pages\ListSpeakers::route('/'),
+            'create' => Pages\CreateSpeaker::route('/create'),
+            'edit' => Pages\EditSpeaker::route('/{record}/edit'),
         ];
     }
 }

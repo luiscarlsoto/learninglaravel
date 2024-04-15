@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\ConferenceResource\Pages;
-use App\Filament\Resources\ConferenceResource\RelationManagers;
-use App\Models\Conference;
+use App\Filament\Resources\VenueResource\Pages;
+use App\Filament\Resources\VenueResource\RelationManagers;
+use App\Models\Venue;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,9 +13,9 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class ConferenceResource extends Resource
+class VenueResource extends Resource
 {
-    protected static ?string $model = Conference::class;
+    protected static ?string $model = Venue::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -26,21 +26,15 @@ class ConferenceResource extends Resource
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('description')
+                Forms\Components\TextInput::make('city')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\DateTimePicker::make('start_date')
-                    ->required(),
-                Forms\Components\DateTimePicker::make('end_date')
-                    ->required(),
-                Forms\Components\TextInput::make('status')
+                Forms\Components\TextInput::make('country')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('region')
+                Forms\Components\TextInput::make('postal_code')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\Select::make('venue_id')
-                    ->relationship('venue', 'name'),
             ]);
     }
 
@@ -50,21 +44,12 @@ class ConferenceResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('description')
+                Tables\Columns\TextColumn::make('city')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('start_date')
-                    ->dateTime()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('end_date')
-                    ->dateTime()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('status')
+                Tables\Columns\TextColumn::make('country')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('region')
+                Tables\Columns\TextColumn::make('postal_code')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('venue.name')
-                    ->numeric()
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -97,9 +82,9 @@ class ConferenceResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListConferences::route('/'),
-            'create' => Pages\CreateConference::route('/create'),
-            'edit' => Pages\EditConference::route('/{record}/edit'),
+            'index' => Pages\ListVenues::route('/'),
+            'create' => Pages\CreateVenue::route('/create'),
+            'edit' => Pages\EditVenue::route('/{record}/edit'),
         ];
     }
 }
